@@ -1,0 +1,215 @@
+.life-in-months {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: auto;
+
+  width: fit-content;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.life-in-months__row {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  transition: all 0.3s;
+  padding: 0 30px;
+  align-items: center;
+
+  &--hovered .life-item {
+    transform: scale(2);
+  }
+
+  // upper-left shadow
+  &:nth-child(1)::before {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    width: 50vw;
+    height: 25vh;
+    background: inherit;
+  }
+
+  // upper-right shadow
+  &:nth-child(2)::before {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 50vw;
+    height: 25vh;
+    background: inherit;
+  }
+
+  // bottom-left shadow
+  &:nth-last-child(2)::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 50vw;
+    height: 25vh;
+    background: inherit;
+  }
+
+  // bottom-right shadow
+  &:nth-last-child(1)::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 50vw;
+    height: 25vh;
+    background: inherit;
+  }
+
+  // left shadow
+  &:nth-child(2n-1)::after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    right: 100%;
+    width: 50vw;
+    height: 100%;
+    background: inherit;
+  }
+
+  // right shadow
+  &:nth-child(2n)::after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 100%;
+    width: 50vw;
+    height: 100%;
+    background: inherit;
+  }
+}
+
+.life-in-months__item {
+  width: 20px;
+  height: 20px;
+  margin: 7px 15px;
+}
+
+.life-row-year {
+  width: 20px;
+  font-size: 20px;
+  margin-right: 20px;
+  text-align: right;
+
+  &--spent {
+    color: grey;
+  }
+}
+
+@media (max-width: 1450px) {
+  .life-in-months__item {
+    width: 15px;
+    height: 15px;
+    margin: 7px 10px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .life-in-months__item {
+    width: 10px;
+    height: 10px;
+    margin: 5px 5px;
+  }
+
+  .life-in-months__row {
+    padding: 0 20px;
+  }
+
+  .life-row-year {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 690px) {
+  .life-in-months {
+    padding: 0;
+  }
+
+  .life-in-months__row {
+    padding: 2px 5px;
+    width: 50vw;
+    justify-content: center;
+  }
+
+  .life-row-year {
+    margin-right: 5px;
+  }
+}
+
+@media (max-width: 600px) {
+  .life-in-months {
+    padding: 0;
+  }
+
+  .life-in-months__item {
+    width: 8px;
+    height: 8px;
+    margin: 3px;
+  }
+
+  .life-in-months__row {
+    padding: 2px 5px;
+    width: 50vw;
+    justify-content: space-around;
+  }
+
+  .life-row-year {
+    font-size: 12px;
+    margin-right: 5px;
+  }
+}
+
+@media (max-width: 420px) {
+  .life-in-months__item {
+    margin: 2px;
+  }
+}
+
+@media (max-width: 380px) {
+  .life-in-months__row {
+    padding: 1px 2px;
+  }
+
+  .life-in-months__item {
+    margin: 1px;
+  }
+}
+
+@media (max-height: 700px) {
+  .life-in-months__item {
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+
+  .life-in-months__row {
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+}
+
+@media (max-height: 640px) {
+  .life-in-months__row {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .life-row-year {
+    font-size: 10px;
+  }
+}

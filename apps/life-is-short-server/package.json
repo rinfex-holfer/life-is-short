@@ -1,0 +1,24 @@
+{
+  "name": "life-is-short-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rinfex-holfer/life-is-short-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://github.com/rinfex-holfer/life-is-short-server#readme",
+  "dependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.7.15",
+    "cors": "^2.8.5",
+    "express": "^4.18.0",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
+  }
+}
