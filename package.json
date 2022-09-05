@@ -4,9 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nx run-many --target=start",
+    "client:start": "nx start life-is-short-client",
+    "server:start": "nx start life-is-short-server"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "nx": "^14.6.4"
+  }
 }

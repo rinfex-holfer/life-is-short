@@ -1,5 +1,4 @@
 import express from "express"
-import path from "path";
 const cors = require('cors')
 const router = express.Router()
 
@@ -26,11 +25,11 @@ const userMock = {
     locale: "ru",
 }
 
-router.get('/user', (req, res) => {
+router.get('/user', (req: any, res: any) => {
     res.send(userMock)
 })
 
-router.get('/days', (req, res) => {
+router.get('/days', (req: any, res: any) => {
     res.send(daysMock)
 })
 
@@ -44,7 +43,7 @@ const app = express()
 app.listen(5000, () => {
     console.log('server started');
 
-    app.get('/', (req, res) => {
+    app.get('/', (req: any, res: any) => {
         res.send('Hello World!')
     })
 });
