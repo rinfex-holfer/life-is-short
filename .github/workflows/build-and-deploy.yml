@@ -26,5 +26,5 @@ jobs:
         run: pnpm build
 
       - name: Copy client
-        run: cp -R '${GITHUB_WORKSPACE}/apps/life-is-short-client/dist' '${GITHUB_WORKSPACE}/apps/life-is-short-server/client'
+        run: cp -R "$GITHUB_WORKSPACE/apps/life-is-short-client/dist" "$GITHUB_WORKSPACE/apps/life-is-short-server/client"
           
