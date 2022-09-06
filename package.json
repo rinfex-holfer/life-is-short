@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nx run-many --target=start",
     "client:start": "nx start life-is-short-client",
-    "server:start": "nx start life-is-short-server"
+    "server:start": "nx start life-is-short-server",
+    "build":  "nx build life-is-short-client"
   },
   "keywords": [],
   "author": "",
