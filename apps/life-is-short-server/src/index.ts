@@ -3,7 +3,7 @@ const cors = require('cors')
 const router = express.Router()
 
 const bodyParser = require('body-parser');
-const root = require('path').join(__dirname, 'dist');
+const root = require('path').join(__dirname, '../client-dist');
 
 const daysMock = [
     // {timestamp: '28-03-2022'},
@@ -25,11 +25,11 @@ const userMock = {
     locale: "ru",
 }
 
-router.get('/user', (req: any, res: any) => {
+router.get('/api/user', (req: any, res: any) => {
     res.send(userMock)
 })
 
-router.get('/days', (req: any, res: any) => {
+router.get('/api/days', (req: any, res: any) => {
     res.send(daysMock)
 })
 
@@ -40,10 +40,10 @@ const app = express()
     .use(express.static(root))
     .use(router)
 
-app.listen(5000, () => {
-    console.log('server started');
+app.get('*', function(req, res) {
+    res.sendFile('index.html', {root: root});
+});
 
-    app.get('/', (req: any, res: any) => {
-        res.send('Hello World!')
-    })
+app.listen(5000, () => {
+    console.log('server started on port 5000');
 });

@@ -22,12 +22,12 @@ jobs:
           run_install: |
             - recursive: true
 
-      - name: Build client
+      - name: Build client-dist
         run: pnpm build
 
-      - name: Copy client
-        run: cp -R "$GITHUB_WORKSPACE/apps/life-is-short-client/dist" "$GITHUB_WORKSPACE/apps/life-is-short-server/client"
+      - name: Copy client-dist
+        run: cp -R "$GITHUB_WORKSPACE/apps/life-is-short-client/dist" "$GITHUB_WORKSPACE/apps/life-is-short-server/client-dist"
 
       - name: Check
-        run: ls "$GITHUB_WORKSPACE/apps/life-is-short-server/client"
+        run: ls "$GITHUB_WORKSPACE/apps/life-is-short-server/client-dist"
           
