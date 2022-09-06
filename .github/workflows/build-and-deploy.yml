@@ -27,4 +27,7 @@ jobs:
 
       - name: Copy client
         run: cp -R "$GITHUB_WORKSPACE/apps/life-is-short-client/dist" "$GITHUB_WORKSPACE/apps/life-is-short-server/client"
+
+      - name: Check
+        run: ls "$GITHUB_WORKSPACE/apps/life-is-short-server/client"
           
