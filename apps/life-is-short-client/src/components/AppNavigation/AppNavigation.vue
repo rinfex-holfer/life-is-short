@@ -1,6 +1,6 @@
 <script setup>
 
-import {appRouteNames} from "../../router/app-routes";
+import {appRouteNames} from "../../router/routes";
 
 </script>
 

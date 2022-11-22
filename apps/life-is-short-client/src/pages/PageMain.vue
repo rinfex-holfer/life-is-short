@@ -1,6 +1,6 @@
 <script setup>
 import LifeCounter from "../components/LifeCounter.vue";
-import {appRouteNames} from "../router/app-routes";
+import {appRouteNames} from "../router/routes";
 </script>
 
 <template>

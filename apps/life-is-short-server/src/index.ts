@@ -44,6 +44,6 @@ app.get('*', function(req, res) {
     res.sendFile('index.html', {root: root});
 });
 
-app.listen(5000, () => {
-    console.log('server started on port 5000');
+app.listen(8080, () => {
+    console.log('server started on port 8080');
 });

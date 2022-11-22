@@ -4,8 +4,9 @@ export default { name: "YearCalendar" }
 
 <script setup lang="ts">
 import {getISOWeek, getISOWeeksInYear} from "date-fns";
+import {currentTime} from "../store";
 
-const now = Date.now()
+const now = currentTime.value
 const weeksInYear = getISOWeeksInYear(now)
 const week = getISOWeek(now)
 </script>

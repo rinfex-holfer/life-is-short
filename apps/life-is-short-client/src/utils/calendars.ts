@@ -1,12 +1,12 @@
-import {LifeWeek, YearMonthLifeCalendar, YearWeekLifeCalendar} from "../domain";
+import {LifeMonth, LifeWeek, YearMonthLifeCalendar, YearWeekLifeCalendar} from "../domain";
 import {
     add,
     addDays,
     addYears,
-    endOfDay, getMonth,
+    endOfDay, getDate, getDaysInMonth, getMonth,
     getWeek,
     getYear,
-    isAfter,
+    isAfter, isEqual, isSameDay,
     isSunday,
     nextDay,
     startOfDay,
@@ -24,13 +24,15 @@ export function createCalendarYearsWithWeeks(dateOfBirth: Date, lifespanInYears:
     let currentYear = yearOfBirth;
 
     let week: LifeWeek = {
-        numInYear: currentWeek,
-        numInLife: weekInLife,
+        idxInYear: currentWeek,
+        idxInLife: weekInLife,
         starts: date,
         ends: nextDay(date, 0),
     }
     const calendar: YearWeekLifeCalendar = [{
-        numInLife: yearOfBirth,
+        startYear: 2000, // TODO
+        endYear: 2000,
+        idxInLife: yearOfBirth,
         weeks: [week],
     }]
 
@@ -47,8 +49,8 @@ export function createCalendarYearsWithWeeks(dateOfBirth: Date, lifespanInYears:
             week = {
                 starts: nextDate,
                 ends: addDays(nextDate, 6),
-                numInLife: weekInLife,
-                numInYear: currentWeek
+                idxInLife: weekInLife,
+                idxInYear: currentWeek
             }
 
             if (currentWeek !== 1) {
@@ -56,8 +58,10 @@ export function createCalendarYearsWithWeeks(dateOfBirth: Date, lifespanInYears:
             } else {
                 currentYear++
                 calendar.push({
-                    numInLife: currentYear,
-                    weeks: [week]
+                    idxInLife: currentYear,
+                    weeks: [week],
+                    startYear: 2000, // TODO
+                    endYear: 2000,
                 })
             }
         }
@@ -69,6 +73,7 @@ export function createCalendarYearsWithWeeks(dateOfBirth: Date, lifespanInYears:
 
 export function createLifeYearsWithWeeks(dateOfBirth: Date, lifespanInYears: number): YearWeekLifeCalendar {
     let weekStartDay = startOfDay(dateOfBirth)
+    let year = getYear(dateOfBirth)
 
     let weekInLife = 1
     const calendar: YearWeekLifeCalendar = []
@@ -78,8 +83,10 @@ export function createLifeYearsWithWeeks(dateOfBirth: Date, lifespanInYears: num
 
     for (let year = 1; year <= lifespanInYears; year++) {
         calendar.push({
-            numInLife: nextYear++,
-            weeks: []
+            idxInLife: nextYear++,
+            weeks: [],
+            startYear: 2000, // TODO
+            endYear: 2000,
         })
 
         for (let i = 1; i <= 53; i++) {
@@ -92,8 +99,8 @@ export function createLifeYearsWithWeeks(dateOfBirth: Date, lifespanInYears: num
                 : nextSunday
 
             calendar[calendar.length - 1].weeks.push({
-                numInYear: i,
-                numInLife: weekInLife++,
+                idxInYear: i,
+                idxInLife: weekInLife++,
                 starts: startOfDay(weekStartDay),
                 ends: endOfDay(endDate),
             })
@@ -108,30 +115,131 @@ export function createLifeYearsWithWeeks(dateOfBirth: Date, lifespanInYears: num
 }
 
 export function createLifeYearsWithMonths(dateOfBirth: Date, lifespanInYears: number): YearMonthLifeCalendar {
-    let monthInLife = 1
-    let month = getMonth(dateOfBirth)
+    let monthInLife = 0
+    let monthIdxInCalendarYear = getMonth(dateOfBirth)
     let year = getYear(dateOfBirth)
+    const dayOfBirth = getDate(dateOfBirth)
+
+    // each life year has 13 months - 11 full ones and 2 partial. Example:
+    // if a birthday is on 15 of November, life year looks like:
+    // 15-30 dates of November (first partial), December -> October (11), 1-14 days of November (second partial).
+    // The exception is when Birthday is on 1 day of any month
+    const bornInFirstDayOfMonth = dayOfBirth === 1
+
+    const lifeYearEqualsCalendarYear = bornInFirstDayOfMonth && getMonth(dateOfBirth) === 0
+
     const calendar: YearMonthLifeCalendar = []
 
-    for (let lifeYear = 1; lifeYear <= lifespanInYears; lifeYear++) {
+    for (let lifeYear = 0; lifeYear < lifespanInYears; lifeYear++) {
         calendar.push({
-            numInLife: lifeYear,
+            startYear: year,
+            endYear: lifeYearEqualsCalendarYear ? year : year + 1,
+            idxInLife: lifeYear,
             months: []
         })
 
+        const monthsRow = calendar[calendar.length - 1].months;
         for (let i = 0; i <= 11; i++) {
-            calendar[calendar.length - 1].months.push({
-                numInLifeYear: i,
-                numInLife: monthInLife++,
+            const isFirstPartialMonth = i === 0 && !bornInFirstDayOfMonth;
+            const lifeMonth: LifeMonth = {
+                monthIdxInLifeYear: i,
+                monthIdxInLife: monthInLife,
                 year,
-                month
-            })
+                monthIdxInCalendarYear: monthIdxInCalendarYear,
+                startDay: isFirstPartialMonth ? dateOfBirth : new Date(year, monthIdxInCalendarYear, 1),
+                endDay: new Date(year, monthIdxInCalendarYear, getDaysInMonth(monthIdxInCalendarYear)),
+            };
+            if (isFirstPartialMonth) {
+                lifeMonth.isFirstPartial = true;
+            }
+            monthsRow.push(lifeMonth);
 
-            month++
-            if (month === 12) {
-                month = 0
+            monthIdxInCalendarYear++
+            if (monthIdxInCalendarYear === 12) {
+                monthIdxInCalendarYear = 0
                 year++
             }
+
+            monthInLife++
+        }
+
+        const hasLastPartialMonth = !bornInFirstDayOfMonth
+        if (hasLastPartialMonth) {
+            monthsRow.push({
+                monthIdxInLifeYear: 12,
+                monthIdxInLife: monthInLife,
+                year,
+                monthIdxInCalendarYear: monthIdxInCalendarYear,
+                startDay: new Date(year, monthIdxInCalendarYear, 1),
+                endDay: new Date(year, monthIdxInCalendarYear, dayOfBirth - 1),
+                isLastPartial: true
+            })
+        }
+    }
+
+    return calendar
+}
+
+export function createLifeMonths(dateOfBirth: Date, lifespanInYears: number): YearMonthLifeCalendar {
+    let monthInLife = 0
+    let monthIdxInCalendarYear = getMonth(dateOfBirth)
+    let year = getYear(dateOfBirth)
+    const dayOfBirth = getDate(dateOfBirth)
+
+    // each life year has 13 months - 11 full ones and 2 partial. Example:
+    // if a birthday is on 15 of November, life year looks like:
+    // 15-30 dates of November (first partial), December -> October (11), 1-14 days of November (second partial).
+    // The exception is when Birthday is on 1 day of any month
+    const bornInFirstDayOfMonth = dayOfBirth === 1
+
+    const lifeYearEqualsCalendarYear = bornInFirstDayOfMonth && getMonth(dateOfBirth) === 0
+
+    const calendar: YearMonthLifeCalendar = []
+
+    for (let lifeYear = 0; lifeYear < lifespanInYears; lifeYear++) {
+        calendar.push({
+            startYear: year,
+            endYear: lifeYearEqualsCalendarYear ? year : year + 1,
+            idxInLife: lifeYear,
+            months: []
+        })
+
+        const monthsRow = calendar[calendar.length - 1].months;
+        for (let i = 0; i <= 11; i++) {
+            const isFirstPartialMonth = i === 0 && !bornInFirstDayOfMonth;
+            const lifeMonth: LifeMonth = {
+                monthIdxInLifeYear: i,
+                monthIdxInLife: monthInLife,
+                year,
+                monthIdxInCalendarYear: monthIdxInCalendarYear,
+                startDay: isFirstPartialMonth ? dateOfBirth : new Date(year, monthIdxInCalendarYear, 1),
+                endDay: new Date(year, monthIdxInCalendarYear, getDaysInMonth(monthIdxInCalendarYear)),
+            };
+            if (isFirstPartialMonth) {
+                lifeMonth.isFirstPartial = true;
+            }
+            monthsRow.push(lifeMonth);
+
+            monthIdxInCalendarYear++
+            if (monthIdxInCalendarYear === 12) {
+                monthIdxInCalendarYear = 0
+                year++
+            }
+
+            monthInLife++
+        }
+
+        const hasLastPartialMonth = !bornInFirstDayOfMonth
+        if (hasLastPartialMonth) {
+            monthsRow.push({
+                monthIdxInLifeYear: 12,
+                monthIdxInLife: monthInLife,
+                year,
+                monthIdxInCalendarYear: monthIdxInCalendarYear,
+                startDay: new Date(year, monthIdxInCalendarYear, 1),
+                endDay: new Date(year, monthIdxInCalendarYear, dayOfBirth - 1),
+                isLastPartial: true
+            })
         }
     }
 

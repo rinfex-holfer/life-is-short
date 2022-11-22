@@ -1,3 +1,5 @@
+@import "constants.less";
+
 * {
     box-sizing: border-box;
 }
@@ -94,6 +96,14 @@ body {
     &--selected {
         background: rgba(0, 0, 0, 0.5);
         border-color: rgba(0, 0, 0, 0.5);
+    }
+
+    &--half-left {
+        border-radius: 50% 0 0 50%;
+    }
+
+    &--half-right {
+        border-radius: 0 50% 50% 0;
     }
 }
 

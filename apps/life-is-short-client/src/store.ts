@@ -2,7 +2,7 @@ import {computed, Ref, ref, watchEffect} from "vue";
 import {LifeMonth, LifeWeek, User, YearMonthLifeCalendar, YearWeekLifeCalendar} from "./domain";
 import {createLifeYearsWithMonths, createLifeYearsWithWeeks} from "./utils/calendars";
 import {getYearsSpentNum} from "./utils/date";
-import {getMonth, isAfter} from "date-fns";
+import {getMonth, getYear, isAfter} from "date-fns";
 import {LangKey} from "./utils/locale";
 
 export const currentUser = ref<User>({
@@ -17,30 +17,35 @@ export const currentUser = ref<User>({
 
 export const currentTime = ref<Date>(new Date())
 
-export const lifeInWeeks = computed(() => {
+export const lifeInMonths = computed(() => {
     const birthDate = new Date(currentUser.value.dateOfBirth);
     return createLifeYearsWithWeeks(birthDate, currentUser.value.expectedLifespan)
 })
 
-export const lifeInMonths = computed<YearMonthLifeCalendar>(() => {
+export const lifeYearsInWeeks = computed(() => {
+    const birthDate = new Date(currentUser.value.dateOfBirth);
+    return createLifeYearsWithWeeks(birthDate, currentUser.value.expectedLifespan)
+})
+
+export const lifeYearsInMonths = computed<YearMonthLifeCalendar>(() => {
     const birthDate = new Date(currentUser.value.dateOfBirth);
     return createLifeYearsWithMonths(birthDate, currentUser.value.expectedLifespan)
 })
 
-export const currLifeYear = computed(() => {
-    return getYearsSpentNum(new Date(currentUser.value.dateOfBirth)) + 1
+export const currentLifeYearIdx = computed(() => {
+    return getYearsSpentNum(new Date(currentUser.value.dateOfBirth))
 })
 
 export const currentLifeWeek = computed<LifeWeek>(() => {
-    const now = new Date()
+    const now = currentTime.value
 
-    const week = lifeInWeeks.value[currLifeYear.value-1]
+    const week = lifeYearsInWeeks.value[currentLifeYearIdx.value - 1]
         .weeks
         .find(week => !isAfter(week.starts, now) && !isAfter(now, week.ends))
 
     if (!week) {
         console.error("no current life week")
-        const lastYear = lifeInWeeks.value[lifeInWeeks.value.length - 1]
+        const lastYear = lifeYearsInWeeks.value[lifeYearsInWeeks.value.length - 1]
         return lastYear.weeks[lastYear.weeks.length - 1]
     }
 
@@ -48,22 +53,24 @@ export const currentLifeWeek = computed<LifeWeek>(() => {
 })
 
 export const currentLifeMonth = computed<LifeMonth>(() => {
-    const now = new Date()
+    const now = currentTime.value
     const currentMonthNum = getMonth(now)
+    const currentYearNum = getYear(now);
 
-    const month = lifeInMonths.value[currLifeYear.value-1]
+    const currentLifeYearIndex = currentLifeYearIdx.value
+    const month = lifeYearsInMonths.value[currentLifeYearIndex]
         .months
-        .find(month => month.month === currentMonthNum)
+        .find(month => month.monthIdxInCalendarYear === currentMonthNum && month.year === currentYearNum)
 
     if (!month) {
         console.error("no current life month")
-        const lastYear = lifeInMonths.value[lifeInMonths.value.length - 1]
+        const lastYear = lifeYearsInMonths.value[lifeYearsInMonths.value.length - 1]
         return lastYear.months[lastYear.months.length - 1]
     }
 
     return month
 })
 
-export const currentLifeWeekNumber = computed(() => currentLifeWeek.value.numInLife)
+export const currentLifeWeekIdx = computed(() => currentLifeWeek.value.idxInLife)
 
-export const currentLifeMonthNumber = computed(() =>  currentLifeMonth.value.numInLife)
+export const currentLifeMonthIdx = computed(() =>  currentLifeMonth.value.monthIdxInLife)

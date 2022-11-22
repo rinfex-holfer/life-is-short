@@ -11,7 +11,7 @@ export enum appRouteNames {
     LIFE_IN_MONTHS = "LIFE_IN_MONTHS",
 }
 
-export const appRoutes = [
+export const routes = [
     {
         path: '/',
         name: appRouteNames.MAIN,

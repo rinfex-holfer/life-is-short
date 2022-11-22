@@ -1,58 +1,58 @@
 <script lang="ts" setup>
 import {RouteLocationNormalized, useRouter} from "vue-router";
-import {ModalKey} from "./modal-key";
-import {removeRouterQueries} from "../../router/app-router-utils";
-import {computed, VueElement} from "vue";
-import Journal from "../Jornal.vue";
+import {getModalComponentByKey, ModalKey} from "./modal-config";
+import {computed} from "vue";
+import {filterLocationQuery} from "../../router/app-router";
+import {closeModal} from "./modal-utils";
 
-const popupMap: Record<ModalKey, VueElement> = {
-  [ModalKey.JOURNAL]: Journal,
-};
+function filterInvalidModalRoutes(to: RouteLocationNormalized) {
+  const modalKey = to.query.modal
+  const isModalKeyInvalid = typeof to.query.modal !== "string"
+      || !getModalComponentByKey(to.query.modal)
 
-function getPopup(key: string): VueElement | null {
-  return popupMap[key as ModalKey] || null
-}
-
-function closePopup() {
-  router.push(removeRouterQueries(router.currentRoute.value, ['popup']))
-}
-
-function filterInvalidPopupRoutes(to: RouteLocationNormalized) {
-  const popupKey = to.query.popup
-  const isPopupKeyInvalid = typeof to.query.popup !== "string"
-      || !getPopup(to.query.popup)
-
-  if (popupKey && isPopupKeyInvalid) {
-    return removeRouterQueries(to, ['popup'])
+  if (modalKey && isModalKeyInvalid) {
+    return filterLocationQuery(to, ['modal'])
   }
 }
 
 const router = useRouter()
+router.beforeEach(filterInvalidModalRoutes)
 
-router.beforeEach(filterInvalidPopupRoutes)
-
-const currentPopupKey = computed<ModalKey | null>(() => {
-  const popupQuery = router.currentRoute.value.query.popup
-  if (popupQuery) return popupQuery as ModalKey
+const currentModalKey = computed<ModalKey | null>(() => {
+  const modalQuery = router.currentRoute.value.query.modal
+  if (modalQuery) return modalQuery as ModalKey
   else return null
 })
 
 </script>
 
 <template>
-  <div class="popup" v-if="currentPopupKey">
-    <button @click="closePopup">Close popup</button>
-    <component :is="getPopup(currentPopupKey)" />
+  <div class="overlay" v-if="currentModalKey">
+    <div class="modal">
+      <button @click="closeModal">Close</button>
+      <component :is="getModalComponentByKey(currentModalKey)" />
+    </div>
   </div>
 </template>
 
-<style scoped>
-.popup {
+<style scoped lang="less">
+
+.overlay {
   position: fixed;
+  z-index: var(--z-modal);
   left: 0;
   top: 0;
   height: 100%;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.5);
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
 }
 </style>

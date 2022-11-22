@@ -12,27 +12,40 @@ export type YearWeekLifeCalendar = YearInLifeWeeks[]
 export type YearMonthLifeCalendar = YearInLifeMonths[]
 
 export type YearInLifeWeeks = {
-    numInLife: number
+    idxInLife: number
+    startYear: number
+    endYear: number
     weeks: LifeWeek[]
 }
 
 export type YearInLifeMonths = {
-    numInLife: number
+    idxInLife: number
+    startYear: number
+    endYear: number
     months: LifeMonth[]
 }
 
 export type LifeWeek = {
-    numInYear: number
-    numInLife: number
+    idxInYear: number
+    idxInLife: number
     starts: Date,
     ends: Date,
 }
 
 export type LifeMonth = {
     year: number
-    month: number
-    numInLifeYear: number
-    numInLife: number
+    monthIdxInCalendarYear: number
+    monthIdxInLifeYear: number
+    monthIdxInLife: number
+    startDay: Date // 1st day of month or birthday
+    endDay: Date // last day of a month or a day before birthday
+    isFirstPartial?: boolean
+    isLastPartial?: boolean
+}
+
+export type CalendarMonth = {
+    year: number
+    monthIdx: number
 }
 
 export type LifeDay = {

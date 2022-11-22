@@ -2,6 +2,7 @@
 function publish() {
   console.log("publish")
 }
+
 </script>
 
 <template>

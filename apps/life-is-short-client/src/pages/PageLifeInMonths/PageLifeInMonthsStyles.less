@@ -1,3 +1,9 @@
+.selected-month {
+  position: absolute;
+  top: 5px;
+  left: 50px;
+}
+
 .life-in-months {
   position: relative;
 
@@ -8,6 +14,7 @@
   width: fit-content;
   margin: 0 auto;
   padding: 20px;
+  //padding: 60px;
 }
 
 .life-in-months__row {
@@ -17,6 +24,7 @@
   flex-wrap: nowrap;
   transition: all 0.3s;
   padding: 0 30px;
+  //padding: 5px 30px;
   align-items: center;
 
   &--hovered .life-item {
@@ -109,7 +117,7 @@
   text-align: right;
 
   &--spent {
-    color: grey;
+    opacity: var(--spent-figure-opacity);
   }
 }
 

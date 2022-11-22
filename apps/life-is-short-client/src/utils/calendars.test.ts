@@ -20,10 +20,10 @@ describe("lifeYearsWithWeeks calendar", () => {
 
     it("each life year has 53 weeks, ends the day before next b-day", () => {
         yearInWeeks.forEach((year, i) => {
-            expect(year.numInLife).eq(i+1)
+            expect(year.idxInLife).eq(i+1)
             expect(year.weeks.length).eq(53)
-            expect(year.weeks[52].numInYear).eq(53)
-            expect(year.weeks[52].numInLife).eq(i*53 + 53)
+            expect(year.weeks[52].idxInYear).eq(53)
+            expect(year.weeks[52].idxInLife).eq(i*53 + 53)
 
             const lastDayExpected = endOfDay(subDays(addYears(dateOfBirth, lifespanInYears), 1))
             const lastDayByCalendar = yearInWeeks[lifespanInYears-1].weeks[52].ends
