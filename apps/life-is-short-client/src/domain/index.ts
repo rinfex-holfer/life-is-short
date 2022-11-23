@@ -1,5 +1,9 @@
 import {LangKey} from "../utils/locale";
 
+export type WeekDayIdx = 0 | 1 | 2 | 3 | 4 | 5 | 6
+
+export type WeekFullOfDays = [Date,Date,Date,Date,Date,Date,Date];
+
 export type User = {
     id: string,
     name: string

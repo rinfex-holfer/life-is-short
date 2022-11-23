@@ -39,12 +39,11 @@ export const currentLifeYearIdx = computed(() => {
 export const currentLifeWeek = computed<LifeWeek>(() => {
     const now = currentTime.value
 
-    const week = lifeYearsInWeeks.value[currentLifeYearIdx.value - 1]
+    const week = lifeYearsInWeeks.value[currentLifeYearIdx.value]
         .weeks
         .find(week => !isAfter(week.starts, now) && !isAfter(now, week.ends))
 
     if (!week) {
-        console.error("no current life week")
         const lastYear = lifeYearsInWeeks.value[lifeYearsInWeeks.value.length - 1]
         return lastYear.weeks[lastYear.weeks.length - 1]
     }

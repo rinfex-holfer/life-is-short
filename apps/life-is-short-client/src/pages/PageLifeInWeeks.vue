@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import {dateFormatNum} from "../utils/date";
-import {lifeYearsInWeeks, currentLifeYearIdx, currentLifeWeekIdx} from "../store";
-import {reactive, ref} from "vue";
+import {currentLifeWeekIdx, currentLifeYearIdx, lifeYearsInWeeks} from "../store";
+import {ref} from "vue";
 import {LifeStage, LifeWeek, YearInLifeWeeks} from "../domain";
-import Week from "../components/Week.vue";
 import AppNavigation from "../components/AppNavigation/AppNavigation.vue"
+import {openModal} from "../components/Modal/modal-utils";
+import {ModalKey} from "../components/Modal/modal-config";
 
 const stages: LifeStage[] = [
   {fromTo: [0, 12], color: "#f6d5b1"},
@@ -21,26 +22,25 @@ function getYearColor(year: number) {
 const hoveredWeek = ref<null | string>(null)
 const hoveredYear = ref<null | number>(null)
 const selectedWeek = ref<number | null>(null)
-const weekCoord = reactive<{x: number, y: number}>({x: 0, y: 0})
 
 const showHoveredWeek = (week: LifeWeek) =>
   hoveredWeek.value = `${dateFormatNum(week.starts)} - ${dateFormatNum(week.ends)} | № в году:${week.idxInYear} | № в жизни:${week.idxInLife}`
 const hideYear = () => hoveredWeek.value = null
 const onYearHovered = (year: YearInLifeWeeks) => hoveredYear.value = year.idxInLife
 
-const selectWeek = (week: LifeWeek, year: YearInLifeWeeks, e: MouseEvent) => {
-  const row: HTMLElement | null = document.querySelector(`[data-year-num="${year.idxInLife}"]`)
-  weekCoord.x = e.target ? (e.target as HTMLElement).offsetLeft + 3 : 0
-  weekCoord.y = row ? (row.offsetTop - 20) : 0
-  selectedWeek.value = week.idxInLife
+const selectWeek = (week: LifeWeek) => {
+  // selectedWeek.value = week.idxInLife
+  openModal(ModalKey.WEEK, {weekIdx: ""+week.idxInLife})
 }
 const deselectWeek = () => selectedWeek.value = null
+
+console.log(currentLifeWeekIdx)
 
 </script>
 
 <template>
   <AppNavigation/>
-<!--  <div class="selectedWeek">{{hoveredDate ? hoveredDate : '-'}}</div>-->
+  <div class="selectedWeek">{{hoveredWeek || '-'}}</div>
   <div v-on:mouseleave="hideYear" class="life">
     <div
         class="lifeRow"
@@ -67,7 +67,7 @@ const deselectWeek = () => selectedWeek.value = null
             'life-item--selected': week.idxInLife === selectedWeek
           }"
           @mouseover="showHoveredWeek(week)"
-          @click="selectWeek(week, year, $event)"
+          @click="selectWeek(week)"
         >
         </span>
     </div>

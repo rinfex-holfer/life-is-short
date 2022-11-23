@@ -1,19 +1,30 @@
-import {LifeMonth, LifeWeek, YearMonthLifeCalendar, YearWeekLifeCalendar} from "../domain";
+import {WeekDayIdx, LifeMonth, LifeWeek, YearMonthLifeCalendar, YearWeekLifeCalendar, WeekFullOfDays} from "../domain";
 import {
     add,
     addDays,
     addYears,
-    endOfDay, getDate, getDaysInMonth, getMonth,
+    endOfDay, getDate, getDay as getDayFns, getDaysInMonth, getMonth,
     getWeek,
     getYear,
-    isAfter, isEqual, isSameDay,
+    isAfter, isBefore, isEqual, isMonday, isSameDay,
     isSunday,
     nextDay,
     startOfDay,
     subDays
 } from "date-fns";
 
+export function getWeekDay(date: Date) {
+    return fixDay(getDayFns(date))
+}
+
+/** date-fns makes Sunday day 0, but I want Monday to be day 0 and Sunday day 6 */
+function fixDay(day: WeekDayIdx): WeekDayIdx {
+    if (day === 0) return 6
+    return day - 1 as WeekDayIdx
+}
+
 export function createCalendarYearsWithWeeks(dateOfBirth: Date, lifespanInYears: number): YearWeekLifeCalendar {
+    const dayOfBirth = getDate(dateOfBirth)
     const dateOfDeath = add(dateOfBirth, {years: lifespanInYears})
     const yearOfBirth = getYear(dateOfBirth)
     const yearOfDeath = getYear(dateOfDeath)
@@ -23,6 +34,9 @@ export function createCalendarYearsWithWeeks(dateOfBirth: Date, lifespanInYears:
     let currentWeek = getWeek(date)
     let currentYear = yearOfBirth;
 
+    const bornInFirstDayOfMonth = dayOfBirth === 1
+    const lifeYearEqualsCalendarYear = bornInFirstDayOfMonth && getMonth(dateOfBirth) === 0
+
     let week: LifeWeek = {
         idxInYear: currentWeek,
         idxInLife: weekInLife,
@@ -30,14 +44,13 @@ export function createCalendarYearsWithWeeks(dateOfBirth: Date, lifespanInYears:
         ends: nextDay(date, 0),
     }
     const calendar: YearWeekLifeCalendar = [{
-        startYear: 2000, // TODO
-        endYear: 2000,
+        startYear: currentYear,
+        endYear:  lifeYearEqualsCalendarYear ? currentYear : currentYear + 1,
         idxInLife: yearOfBirth,
         weeks: [week],
     }]
 
-    while (date.toString() !== dateOfDeath.toString()) {
-        // console.log(date, dateOfDeath)
+    while (isBefore(date, dateOfDeath)) {
         const nextDate = add(date, {days: 1})
         const weekOfNextDate = getWeek(nextDate)
 
@@ -60,8 +73,8 @@ export function createCalendarYearsWithWeeks(dateOfBirth: Date, lifespanInYears:
                 calendar.push({
                     idxInLife: currentYear,
                     weeks: [week],
-                    startYear: 2000, // TODO
-                    endYear: 2000,
+                    startYear: currentYear,
+                    endYear: lifeYearEqualsCalendarYear ? currentYear : currentYear + 1,
                 })
             }
         }
@@ -73,20 +86,25 @@ export function createCalendarYearsWithWeeks(dateOfBirth: Date, lifespanInYears:
 
 export function createLifeYearsWithWeeks(dateOfBirth: Date, lifespanInYears: number): YearWeekLifeCalendar {
     let weekStartDay = startOfDay(dateOfBirth)
-    let year = getYear(dateOfBirth)
+    let yearOrBirth = getYear(dateOfBirth)
+    const dayOfBirth = getDate(dateOfBirth)
 
     let weekInLife = 1
     const calendar: YearWeekLifeCalendar = []
-    let nextYear = 1
     let nextBday = addYears(dateOfBirth, 1)
     let dayBeforNextBday = subDays(nextBday, 1)
 
-    for (let year = 1; year <= lifespanInYears; year++) {
+    const bornInFirstDayOfMonth = dayOfBirth === 1
+    const lifeYearEqualsCalendarYear = bornInFirstDayOfMonth && getMonth(dateOfBirth) === 0
+
+    for (let yearInLifeIdx = 0; yearInLifeIdx < lifespanInYears; yearInLifeIdx++) {
+        const year = yearOrBirth + yearInLifeIdx
+
         calendar.push({
-            idxInLife: nextYear++,
+            idxInLife: yearInLifeIdx,
             weeks: [],
-            startYear: 2000, // TODO
-            endYear: 2000,
+            startYear: year,
+            endYear:  lifeYearEqualsCalendarYear ? year : year + 1,
         })
 
         for (let i = 1; i <= 53; i++) {
@@ -112,6 +130,17 @@ export function createLifeYearsWithWeeks(dateOfBirth: Date, lifespanInYears: num
     }
 
     return calendar
+}
+
+export function getDaysOfWeek(week: LifeWeek): WeekFullOfDays {
+    const days: Date[] = []
+    const lifeWeekStartDayIdx = getWeekDay(week.starts)
+
+    for (let dayIdx = 0; dayIdx <= 6; dayIdx++) {
+        days.push(subDays(week.starts, lifeWeekStartDayIdx-dayIdx))
+    }
+
+    return days as WeekFullOfDays;
 }
 
 export function createLifeYearsWithMonths(dateOfBirth: Date, lifespanInYears: number): YearMonthLifeCalendar {

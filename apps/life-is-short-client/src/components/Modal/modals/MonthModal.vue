@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import {getCurrentQuery, removeQueryFromCurrentLocation} from "../../../router/app-router";
 import Month from "../../Month.vue";
-import {onUnmounted, reactive} from "vue";
-import {onBeforeRouteUpdate} from "vue-router";
+import {onUnmounted, reactive, watchEffect} from "vue";
+import {useRoute} from "vue-router";
+import {CalendarMonth} from "../../../domain";
 
 const {monthIdx, year} = getCurrentQuery() as {monthIdx: string, year: string};
-const monthModalProps = reactive({monthIdx: +monthIdx, year: +year})
+const calendarMonth = reactive<CalendarMonth>({monthIdx: +monthIdx, year: +year})
 
-onBeforeRouteUpdate((from, to) => {
-  const {monthIdx, year} = to.query as {monthIdx: string, year: string};
-  monthModalProps.year = +year
-  monthModalProps.monthIdx = +monthIdx
+const route = useRoute()
+watchEffect(() => {
+  const { monthIdx, year } = route.query as { monthIdx: string, year: string }
+  calendarMonth.year = +year
+  calendarMonth.monthIdx = +monthIdx
 })
 
 onUnmounted(() => {
@@ -20,7 +22,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <Month :month="monthModalProps"/>
+  <Month :month="calendarMonth"/>
 </template>
 
 <style scoped>
