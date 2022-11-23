@@ -2,7 +2,7 @@ import PageMain from "../pages/PageMain.vue";
 import PageMonth from "../pages/PageMonth.vue";
 import PageLifeInMonths from "../pages/PageLifeInMonths/PageLifeInMonths.vue";
 import PageLifeInWeeks from "../pages/PageLifeInWeeks.vue";
-import {RouteRecordRaw} from "vue-router";
+import { RouteRecordRaw } from "vue-router";
 
 export enum appRouteNames {
     MAIN = "MAIN",
@@ -13,23 +13,23 @@ export enum appRouteNames {
 
 export const routes = [
     {
-        path: '/',
+        path: "/",
         name: appRouteNames.MAIN,
-        component: PageMain
+        component: PageMain,
     },
     {
-        path: '/life-in-weeks',
+        path: "/life-in-weeks",
         name: appRouteNames.LIFE_IN_WEEKS,
-        component: PageLifeInWeeks
+        component: PageLifeInWeeks,
     },
     {
-        path: '/life-in-months',
+        path: "/life-in-months",
         name: appRouteNames.LIFE_IN_MONTHS,
-        component: PageLifeInMonths
+        component: PageLifeInMonths,
     },
     {
-        path: '/months/:monthNum',
+        path: "/months/:monthNum",
         name: appRouteNames.MONTH,
         component: PageMonth,
     },
-] as RouteRecordRaw[]
+] as RouteRecordRaw[];

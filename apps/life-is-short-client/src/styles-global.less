@@ -32,8 +32,6 @@ body {
     }
 }
 
-
-
 .calendar {
     display: flex;
     align-items: center;
@@ -108,7 +106,6 @@ body {
     }
 }
 
-
 .weekContainer {
     box-sizing: border-box;
     flex-wrap: nowrap;
@@ -123,10 +120,12 @@ body {
 }
 
 .anim-pulse {
-    animation: pulse .5s infinite alternate;
+    animation: pulse 0.5s infinite alternate;
     transform-origin: center;
 }
 
 @keyframes pulse {
-    to { transform: scale(1.4); }
+    to {
+        transform: scale(1.4);
+    }
 }

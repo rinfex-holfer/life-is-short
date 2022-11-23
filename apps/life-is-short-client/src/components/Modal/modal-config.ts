@@ -1,7 +1,7 @@
 import Journal from "../Jornal.vue";
 import MonthModal from "./modals/MonthModal.vue";
 import WeekModal from "./modals/WeekModal.vue";
-import {VueElement} from "vue";
+import { VueElement } from "vue";
 
 export enum ModalKey {
     JOURNAL = "journal",
@@ -10,9 +10,9 @@ export enum ModalKey {
 }
 
 export type ModalProps = {
-    [ModalKey.MONTH]: { year: string, monthIdx: string },
-    [ModalKey.WEEK]: { weekIdx: string },
-}
+    [ModalKey.MONTH]: { year: string; monthIdx: string };
+    [ModalKey.WEEK]: { weekIdx: string };
+};
 
 const modalMap: Record<ModalKey, VueElement> = {
     [ModalKey.JOURNAL]: Journal,
@@ -21,5 +21,5 @@ const modalMap: Record<ModalKey, VueElement> = {
 };
 
 export function getModalComponentByKey(key: string): VueElement | null {
-    return modalMap[key as ModalKey] || null
+    return modalMap[key as ModalKey] || null;
 }

@@ -1,18 +1,13 @@
 <script lang="ts" setup>
 function publish() {
-  console.log("publish")
+    console.log("publish");
 }
-
 </script>
 
 <template>
-  <textarea name="journal" cols="30" rows="10">
+    <textarea name="journal" cols="30" rows="10"></textarea>
 
-    </textarea>
-
-  <button type="button" @click="publish">publish</button>
+    <button type="button" @click="publish">publish</button>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

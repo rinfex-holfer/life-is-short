@@ -1,29 +1,29 @@
-import { ru, enUS } from 'date-fns/locale'
+import { ru, enUS } from "date-fns/locale";
 
 export const enum LangKey {
-    RU = 'ru',
-    EN = 'en',
+    RU = "ru",
+    EN = "en",
 }
 
 type LangMap = {
     [key in LangKey]: {
-        dateFnsLocale: Locale
-    }
-}
+        dateFnsLocale: Locale;
+    };
+};
 
 let langMap: LangMap = {
     [LangKey.RU]: {
-        dateFnsLocale: ru
+        dateFnsLocale: ru,
     },
     [LangKey.EN]: {
-        dateFnsLocale: enUS
+        dateFnsLocale: enUS,
     },
-}
+};
 
-let currentLang: LangKey = LangKey.RU
+let currentLang: LangKey = LangKey.RU;
 
 export function getLang(): LangKey {
-    return currentLang
+    return currentLang;
 }
 
 export function setLang(lang: LangKey) {
