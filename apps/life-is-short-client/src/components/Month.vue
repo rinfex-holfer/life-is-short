@@ -89,7 +89,7 @@ const monthRows = computed<MonthRows>(() => {
 .row {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     padding: 5px;
     justify-content: flex-start;
 }

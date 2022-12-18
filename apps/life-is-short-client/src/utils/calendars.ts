@@ -109,7 +109,7 @@ export function createLifeYearsWithWeeks(
     lifespanInYears: number
 ): YearWeekLifeCalendar {
     let weekStartDay = startOfDay(dateOfBirth);
-    let yearOrBirth = getYear(dateOfBirth);
+    const yearOrBirth = getYear(dateOfBirth);
     const dayOfBirth = getDate(dateOfBirth);
 
     let weekInLife = 1;
@@ -135,7 +135,7 @@ export function createLifeYearsWithWeeks(
                 ? weekStartDay
                 : nextDay(weekStartDay, 0);
 
-            let endDate = isAfter(nextSunday, dayBeforNextBday) ? dayBeforNextBday : nextSunday;
+            const endDate = isAfter(nextSunday, dayBeforNextBday) ? dayBeforNextBday : nextSunday;
 
             calendar[calendar.length - 1].weeks.push({
                 idxInYear: i,
