@@ -3,7 +3,7 @@ const cors = require("cors");
 const router = express.Router();
 
 const bodyParser = require("body-parser");
-const root = require("path").join(__dirname, "../client");
+const root = require("path").join(__dirname, "../client-dist");
 
 const daysMock = [
   // {timestamp: '28-03-2022'},
