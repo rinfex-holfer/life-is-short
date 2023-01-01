@@ -22,9 +22,11 @@ jobs:
         with:
           repo: 'rinfex-holfer/life-is-short-client'
           version: 'tags/2023.01.01_15-23'
-          file: '2023.01.01_15-23.zip'
+          regex: true
+          file: "*"
+#          file: '2023.01.01_15-23.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
-          target: 'client-dist'
+          target: '$GITHUB_WORKSPACE/client-dist'
 
 #          repo: 'dsaltares/godot-wild-jam-18'
 #          version: 'tags/v0.1.18'
