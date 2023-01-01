@@ -23,7 +23,7 @@ jobs:
           repo: 'rinfex-holfer/life-is-short-client'
           version: 'tags/2023.01.01_15-23'
           regex: true
-          file: "*"
+          file: "*.json"
 #          file: '2023.01.01_15-23.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
           target: '$GITHUB_WORKSPACE/client-dist'
