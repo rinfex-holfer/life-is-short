@@ -22,7 +22,7 @@ jobs:
         with:
 #          repo: 'rinfex-holfer/life-is-short-client'
 #          version: 'tags/2023.01.01_15-23'
-          file: '*.zip'
+          file: '*'
           target: 'client-dist'
           token: ${{ secrets.GITHUB_TOKEN }}
 
