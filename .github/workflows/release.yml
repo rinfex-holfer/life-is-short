@@ -20,11 +20,11 @@ jobs:
       - name: Checkout client release
         uses: dsaltares/fetch-gh-release-asset@master
         with:
-#          repo: 'rinfex-holfer/life-is-short-client'
-#          version: 'tags/2023.01.01_15-23'
-          file: '*'
-          target: 'client-dist'
+          repo: 'dsaltares/godot-wild-jam-18'
+          version: 'tags/v0.1.18'
+          file: 'plague-linux.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
+          target: 'client-dist'
 
       - name: Check
         run: ls "$GITHUB_WORKSPACE/client-dist"
