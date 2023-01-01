@@ -17,19 +17,28 @@ jobs:
         with:
           node-version: 16.16.x
 
-#      - name: Check
-#        run: ls "$GITHUB_WORKSPACE/client-dist"
-
-      - name: Generate release tag
-        id: tag
-        run: |
-          echo "::set-output name=release_tag::$(date +"%Y.%m.%d_%H-%M")"
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout client release
+        uses: dsaltares/fetch-gh-release-asset@master
         with:
-          tag_name: ${{ steps.tag.outputs.release_tag }}
-          files: "$GITHUB_WORKSPACE/client-dist"
+          repo: 'rinfex-holfer/life-is-short-client'
+          version: 'tags/2023.01.01_15-23'
+          file: '2023.01.01_15-23.zip'
+          target: 'client-dist'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check
+        run: ls "$GITHUB_WORKSPACE/client-dist"
+
+#      - name: Generate release tag
+#        id: tag
+#        run: |
+#          echo "::set-output name=release_tag::$(date +"%Y.%m.%d_%H-%M")"
+#
+#      - name: Release
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{ steps.tag.outputs.release_tag }}
+#          files: "$GITHUB_WORKSPACE/client-dist"
 
