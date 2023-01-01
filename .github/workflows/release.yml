@@ -20,10 +20,10 @@ jobs:
       - name: Checkout client release
         uses: dsaltares/fetch-gh-release-asset@master
         with:
-          repo: 'rinfex-holfer/life-is-short-client'
+#          repo: 'rinfex-holfer/life-is-short-client'
 #          version: 'tags/2023.01.01_15-23'
           file: '*.zip'
-#          target: 'client-dist'
+          target: 'client-dist'
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check
