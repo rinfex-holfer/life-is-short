@@ -23,6 +23,7 @@ jobs:
         with:
           repository: 'rinfex-holfer/life-is-short-client'
           latest: true
+          regex: true
           file: "*.zip"
           target: "client-dist.zip"
 
