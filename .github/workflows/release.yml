@@ -23,7 +23,7 @@ jobs:
         with:
           repository: 'rinfex-holfer/life-is-short-client'
           latest: true
-          tarBall: true
+          tarBall: false
           zipBall: true
 
       - name: Check tag name
@@ -33,10 +33,7 @@ jobs:
         run: ls "$GITHUB_WORKSPACE"
 
       - name: Unzip
-        run: unzip "$GITHUB_WORKSPACE/life-is-short-client-${{steps.fetch-client-step.outputs.tag_name}}.zip" -d client-dist
-
-      - name: unTar
-        run: tar -xvf "$GITHUB_WORKSPACE/life-is-short-client-${{steps.fetch-client-step.outputs.tag_name}}.tar.gz"
+        run: unzip -j "$GITHUB_WORKSPACE/life-is-short-client-${{steps.fetch-client-step.outputs.tag_name}}.zip" -d client-dist
 
       - name: Remove zip
         run: rm -rf "$GITHUB_WORKSPACE/life-is-short-client-${{steps.fetch-client-step.outputs.tag_name}}.zip"
