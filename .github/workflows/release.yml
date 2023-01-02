@@ -34,11 +34,11 @@ jobs:
         run: ls "$GITHUB_WORKSPACE"
 
       - name: Unzip
-        run: unzip "$GITHUB_WORKSPACE/client-dist.zip"
+        run: unzip "$GITHUB_WORKSPACE/client-dist.zip" "$GITHUB_WORKSPACE/src"
 
       - name: Remove zip
         run: rm -rf "$GITHUB_WORKSPACE/client-dist.zip"
 
       - name: Check
-        run: ls "$GITHUB_WORKSPACE/client-dist"
+        run: ls "$GITHUB_WORKSPACE/src/client-dist"
 
