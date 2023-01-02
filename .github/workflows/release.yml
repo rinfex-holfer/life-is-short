@@ -23,8 +23,8 @@ jobs:
         with:
           repository: 'rinfex-holfer/life-is-short-client'
           latest: true
-#          tarBall: false
-#          zipBall: true
+          tarBall: false
+          zipBall: true
           fileName: "*.zip"
           out-file-path: "test"
 
