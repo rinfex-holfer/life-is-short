@@ -23,23 +23,27 @@ jobs:
         with:
           repository: 'rinfex-holfer/life-is-short-client'
           latest: true
-          tarBall: false
+          tarBall: true
           zipBall: true
-          fileName: "*.zip"
-          out-file-path: "test"
 
       - name: Check tag name
         run: echo "${{steps.fetch-client-step.outputs.tag_name}}"
 
       - name: Check
-        run: ls "$GITHUB_WORKSPACE/test"
+        run: ls "$GITHUB_WORKSPACE"
 
       - name: Unzip
         run: unzip "$GITHUB_WORKSPACE/life-is-short-client-${{steps.fetch-client-step.outputs.tag_name}}.zip" -d client-dist
+
+      - name: unTar
+        run: tar -xvf "$GITHUB_WORKSPACE/life-is-short-client-${{steps.fetch-client-step.outputs.tag_name}}.tar.gz"
 
       - name: Remove zip
         run: rm -rf "$GITHUB_WORKSPACE/life-is-short-client-${{steps.fetch-client-step.outputs.tag_name}}.zip"
 
       - name: Check
         run: ls "$GITHUB_WORKSPACE/client-dist"
+
+      - name: Check
+        run: ls "$GITHUB_WORKSPACE"
 
