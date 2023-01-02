@@ -1,1 +1,1 @@
-# life-is-short-server
+# life-is-short app server
