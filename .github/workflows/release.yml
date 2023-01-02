@@ -18,6 +18,7 @@ jobs:
           node-version: 16.16.x
 
       - name: Fetch client release
+        id: fetch-client-step
         uses: robinraju/release-downloader@v1.7
         with:
           repository: 'rinfex-holfer/life-is-short-client'
@@ -26,9 +27,15 @@ jobs:
           zipBall: true
           out-file-path: "client-dist"
 
-      - name: Check
-        run: ls "$GITHUB_WORKSPACE/client-dist"
+      - name: Check tag name
+        run: echo "${{steps.fetch-client-step.outputs.tag_name}}"
 
       - name: unzip
-        run: unzip "$GITHUB_WORKSPACE/client-dist/life-is-short-client-2023.01.01_15-23.zip"
+        run: unzip "$GITHUB_WORKSPACE/life-is-short-client-2023.01.01_15-23.zip" -d client-dist
+
+      - name: remove zip
+        run: rm -rf "$GITHUB_WORKSPACE/life-is-short-client-2023.01.01_15-23.zip"
+
+      - name: Check
+        run: ls "$GITHUB_WORKSPACE/client-dist"
 
