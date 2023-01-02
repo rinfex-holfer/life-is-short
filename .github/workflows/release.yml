@@ -27,8 +27,8 @@ jobs:
           out-file-path: "client-dist"
 
       - name: Check
-        run: ls "$GITHUB_WORKSPACE"
-
-      - name: Check
         run: ls "$GITHUB_WORKSPACE/client-dist"
+
+      - name: unzip
+        run: unzip life-is-short-client-2023.01.01_15-23.zip
 
