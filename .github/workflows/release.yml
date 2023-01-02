@@ -18,7 +18,7 @@ jobs:
           node-version: 16.16.x
 
       - name: Fetch client release
-      - uses: robinraju/release-downloader@v1.7
+        uses: robinraju/release-downloader@v1.7
         with:
           repository: 'rinfex-holfer/life-is-short-client'
           latest: true
