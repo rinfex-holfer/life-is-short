@@ -30,11 +30,11 @@ jobs:
       - name: Check tag name
         run: echo "${{steps.fetch-client-step.outputs.tag_name}}"
 
-      - name: unzip
-        run: unzip "$GITHUB_WORKSPACE/life-is-short-client-2023.01.01_15-23.zip" -d client-dist
+      - name: Unzip
+        run: unzip "$GITHUB_WORKSPACE/${{steps.fetch-client-step.outputs.tag_name}}.zip" -d client-dist
 
-      - name: remove zip
-        run: rm -rf "$GITHUB_WORKSPACE/life-is-short-client-2023.01.01_15-23.zip"
+      - name: Remove zip
+        run: rm -rf "$GITHUB_WORKSPACE/${{steps.fetch-client-step.outputs.tag_name}}.zip"
 
       - name: Check
         run: ls "$GITHUB_WORKSPACE/client-dist"
