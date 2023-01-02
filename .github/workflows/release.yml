@@ -23,8 +23,7 @@ jobs:
         with:
           repository: 'rinfex-holfer/life-is-short-client'
           latest: true
-          tarBall: false
-          zipBall: true
+          file: "*.zip"
           target: "client-dist.zip"
 
       - name: Check tag name
