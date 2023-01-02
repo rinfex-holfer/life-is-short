@@ -25,16 +25,15 @@ jobs:
           latest: true
           tarBall: false
           zipBall: true
-          out-file-path: "client-dist"
 
       - name: Check tag name
         run: echo "${{steps.fetch-client-step.outputs.tag_name}}"
 
       - name: Unzip
-        run: unzip "$GITHUB_WORKSPACE/${{steps.fetch-client-step.outputs.tag_name}}.zip" -d client-dist
+        run: unzip "${{steps.fetch-client-step.outputs.tag_name}}.zip" -d client-dist
 
       - name: Remove zip
-        run: rm -rf "$GITHUB_WORKSPACE/${{steps.fetch-client-step.outputs.tag_name}}.zip"
+        run: rm -rf "${{steps.fetch-client-step.outputs.tag_name}}.zip"
 
       - name: Check
         run: ls "$GITHUB_WORKSPACE/client-dist"
