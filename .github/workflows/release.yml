@@ -23,9 +23,9 @@ jobs:
         with:
           repository: 'rinfex-holfer/life-is-short-client'
           latest: true
-          tarBall: false
-          zipBall: false
-          fileName: "*.zip"
+#          tarBall: false
+#          zipBall: false
+          fileName: "2023.01.01_15-23.zip"
 
       - name: Check tag name
         run: echo "${{steps.fetch-client-step.outputs.tag_name}}"
